@@ -26,6 +26,13 @@ lazy val root = (project in file("."))
     // Compiler plugins:
     addCompilerPlugin(("org.scalameta" % "paradise" % VersionScalameta).cross(CrossVersion.full)),
 
+    // Publish settings:
+    useGpg := true,
+    releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+    publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging),
+    publishMavenStyle := true,
+    publishArtifact in Test := false,
+
     // Libraries:
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-core"           % VersionCats,
