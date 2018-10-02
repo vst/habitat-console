@@ -1,3 +1,5 @@
+import ReleaseTransformations._
+
 // Define versions for libraries:
 val VersionCats              = "1.4.0"
 val VersionCatsEffect        = "1.0.0"
@@ -26,12 +28,25 @@ lazy val root = (project in file("."))
     // Compiler plugins:
     addCompilerPlugin(("org.scalameta" % "paradise" % VersionScalameta).cross(CrossVersion.full)),
 
-    // Publish settings:
+    // Release/Publish settings:
     useGpg := true,
     releasePublishArtifactsAction := PgpKeys.publishSigned.value,
     publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging),
     publishMavenStyle := true,
     publishArtifact in Test := false,
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies, // : ReleaseStep
+      inquireVersions,           // : ReleaseStep
+      runClean,                  // : ReleaseStep
+      runTest,                   // : ReleaseStep
+      setReleaseVersion,         // : ReleaseStep
+      //commitReleaseVersion,    // : ReleaseStep, performs the initial git checks
+      //tagRelease,              // : ReleaseStep
+      publishArtifacts,          // : ReleaseStep, checks whether `publishTo` is properly set up
+      setNextVersion,            // : ReleaseStep
+      //commitNextVersion,       // : ReleaseStep
+      //pushChanges              // : ReleaseStep, also checks that an upstream branch is properly configured
+    ),
 
     // Libraries:
     libraryDependencies ++= Seq(
