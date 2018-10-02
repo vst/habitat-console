@@ -12,7 +12,7 @@ lazy val root = (project in file("."))
     name := "habitat-console",
     organization := "com.vsthost.rnd",
     scalaVersion := "2.12.7",
-    version := "0.1.0-SNAPSHOT",
+    version := "0.1.0",
 
     // Scalac Options:
     scalacOptions += "-deprecation",
